@@ -1,4 +1,4 @@
-# 🐶🐱 Pet Random Outfit Generator
+# 🐶🐱 PawFit
 
 [![React](https://img.shields.io/badge/React-18.2.0-blue?logo=react&logoColor=white)](https://reactjs.org/) 
 [![Vite](https://img.shields.io/badge/Vite-4.4.9-blueviolet?logo=vite&logoColor=white)](https://vitejs.dev/)
