@@ -33,31 +33,35 @@ Users can choose between a **Dog** or **Cat**, and the app displays a random com
 
 1. **Clone the repository**
 
-```bash
+```
 git clone https://github.com/your-username/pet-outfit-generator.git
 cd pet-outfit-generator
-Install dependencies
+```
 
-bash
-Copy code
+
+2. **Install dependencies**
+
+```
 npm install
-Create a .env file in the root folder
+```
 
-bash
-Copy code
+
+3. **Create a .env file in the root folder**
+```
 VITE_UNSPLASH_KEY=YOUR_UNSPLASH_ACCESS_KEY
-⚠️ Make sure the variable starts with VITE_.
+```
+⚠️ Make sure the variable starts with `VITE_`.
 
-Start the development server
 
-bash
-Copy code
+4. **Start the development server**
+```
 npm run dev
-Open the URL printed in your terminal (usually http://localhost:5173) to see the app.
+```
+Open the URL printed in your terminal (usually `http://localhost:5173`) to see the app.
 
-📁 Project Structure
-bash
-Copy code
+
+📁 **Project Structure**
+```
 my-react-app/
 │
 ├── public/
@@ -70,11 +74,10 @@ my-react-app/
 ├── .env               # Contains Unsplash API key
 ├── package.json
 └── README.md
-🔧 Possible Enhancements
-Add more outfit categories (hats, scarves, accessories)
+```
 
-Save favorite outfits
-
-Use multiple APIs for more variety
-
-Layer outfits visually on the pet image for a realistic look
+🔧 **Possible Enhancements**
+- Add more outfit categories (hats, scarves, accessories)
+- Save favorite outfits
+- Use multiple APIs for more variety
+- Layer outfits visually on the pet image for a realistic look
