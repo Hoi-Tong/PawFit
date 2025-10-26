@@ -1,135 +1,80 @@
-🐶🐱 Pet Random Outfit Generator (Technical Version)
+# 🐶🐱 Pet Random Outfit Generator
 
-A React + Vite web application that dynamically generates random pet outfits using live images fetched from APIs.
-The app supports both dog and cat pets, fetching random clothing images (shirts, pants, shoes) and displaying them on the page.
+[![React](https://img.shields.io/badge/React-18.2.0-blue?logo=react&logoColor=white)](https://reactjs.org/) 
+[![Vite](https://img.shields.io/badge/Vite-4.4.9-blueviolet?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-🛠️ Tech Stack
-Category	Technologies / Libraries
-Frontend	React (Functional Components)
-State	React Hooks (useState, useEffect)
-API	Unsplash API for outfit images, Dog CEO API for dog images, The Cat API for cat images
-Build Tool	Vite
-Styling	CSS
-⚙️ Features (Technical)
+A fun and interactive web app built with **React + Vite** that generates **random outfits for pets**.  
+Users can choose between a **Dog** or **Cat**, and the app displays a random combination of **shirt, pants, and shoes** for the pet.
 
-Dynamic pet selection: Users can choose Dog or Cat.
+---
 
-Asynchronous API calls: Uses fetch and Promise.all to retrieve multiple outfit images simultaneously.
+## 🚀 Features
 
-State management: React useState is used to store the URLs of the pet image and clothing images.
+- Choose between **Dog** or **Cat**
+- Randomized pet outfits every time
+- Uses live images from APIs for pets and clothing
+- Responsive and simple design
+- Quick and fun way to see pets in cute outfits
 
-Randomized outfits: Unsplash “random photo” endpoints with query terms tailored for pets.
+---
 
-Conditional rendering: Images are only displayed after the API responses are loaded.
+## 🛠️ Tech Stack
 
-Loading state: Button is disabled while requests are in progress to prevent multiple concurrent fetches.
+- **React** (Functional Components)  
+- **Vite** for fast development and hot reload  
+- **Unsplash API** for clothing images  
+- **Dog CEO API** and **The Cat API** for pet images  
+- **CSS** for styling  
 
-🧩 Implementation Details
-1️⃣ State Variables
-const [petImage, setPetImage] = useState("");
-const [shirt, setShirt] = useState("");
-const [pants, setPants] = useState("");
-const [shoes, setShoes] = useState("");
-const [loading, setLoading] = useState(false);
+---
 
+## 💾 Setup Instructions
 
-petImage → stores the fetched dog or cat image URL
+1. **Clone the repository**
 
-shirt, pants, shoes → store outfit part image URLs
-
-loading → boolean flag to prevent multiple API calls
-
-2️⃣ Pet Image Fetching
-if (petType === "dog") {
-  const res = await fetch("https://dog.ceo/api/breeds/image/random");
-  const data = await res.json();
-  petImageUrl = data.message;
-} else {
-  const res = await fetch("https://api.thecatapi.com/v1/images/search");
-  const data = await res.json();
-  petImageUrl = data[0].url;
-}
-
-
-Uses Dog CEO API for random dogs
-
-Uses The Cat API for random cats
-
-3️⃣ Outfit Image Fetching (Unsplash API)
-const fetchFromUnsplash = async (query) => {
-  const res = await fetch(
-    `https://api.unsplash.com/photos/random?query=${query}&orientation=squarish&client_id=${UNSPLASH_KEY}`
-  );
-  const data = await res.json();
-  return data.urls.small;
-};
-
-const [shirtImg, pantsImg, shoesImg] = await Promise.all([
-  fetchFromUnsplash(shirtQuery),
-  fetchFromUnsplash(pantsQuery),
-  fetchFromUnsplash(shoesQuery),
-]);
-
-
-Query terms are dynamically set based on petType:
-
-const shirtQuery = petType === "dog" ? "dog shirt OR dog clothes" : "cat shirt OR cat outfit";
-const pantsQuery = petType === "dog" ? "dog pants OR dog costume" : "cat pants OR cat costume";
-const shoesQuery = petType === "dog" ? "dog shoes OR dog boots" : "cat shoes OR cat socks";
-
-
-Promise.all fetches all images concurrently for performance.
-
-4️⃣ Event Handling
-<button onClick={() => fetchRandomOutfit("dog")}>Generate Dog Outfit</button>
-<button onClick={() => fetchRandomOutfit("cat")}>Generate Cat Outfit</button>
-
-
-Clicking a button triggers the fetchRandomOutfit() function with the selected petType.
-
-5️⃣ Conditional Rendering
-{petImage && (
-  <div className="images">
-    <img src={petImage} alt="Pet" className="pet" />
-    <div className="outfit">
-      {shirt && <img src={shirt} alt="shirt" />}
-      {pants && <img src={pants} alt="pants" />}
-      {shoes && <img src={shoes} alt="shoes" />}
-    </div>
-  </div>
-)}
-
-
-Ensures no broken images are rendered before API responses.
-
-💾 Setup Instructions
-
-Clone the repo:
-
+```bash
 git clone https://github.com/your-username/pet-outfit-generator.git
 cd pet-outfit-generator
+Install dependencies
 
-
-Install dependencies:
-
+bash
+Copy code
 npm install
+Create a .env file in the root folder
 
-
-Create .env in project root:
-
+bash
+Copy code
 VITE_UNSPLASH_KEY=YOUR_UNSPLASH_ACCESS_KEY
+⚠️ Make sure the variable starts with VITE_.
 
+Start the development server
 
-Run dev server:
-
+bash
+Copy code
 npm run dev
+Open the URL printed in your terminal (usually http://localhost:5173) to see the app.
 
+📁 Project Structure
+bash
+Copy code
+my-react-app/
+│
+├── public/
+│   └── vite.svg
+├── src/
+│   ├── assets/
+│   ├── App.css
+│   ├── App.jsx
+│   └── main.jsx
+├── .env               # Contains Unsplash API key
+├── package.json
+└── README.md
 🔧 Possible Enhancements
+Add more outfit categories (hats, scarves, accessories)
 
-Replace Unsplash with Pixabay API for more relevant pet clothing images.
+Save favorite outfits
 
-Add layered rendering so clothing overlaps the pet image naturally.
+Use multiple APIs for more variety
 
-Introduce categories like hats, scarves, costumes.
-
-Cache images locally to reduce API calls and speed up loading.
+Layer outfits visually on the pet image for a realistic look
