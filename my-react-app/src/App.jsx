@@ -1,46 +1,101 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 import React, { useEffect, useState } from 'react';
 
+import './App.css'
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [petImage, setPetImage] = useState("");
+  const [shirt, setShirt] = useState("");
+  const [pants, setPants] = useState("");
+  const [shoes, setShoes] = useState("");
+  const [loading, setLoading] = useState(false);
 
+  const UNSPLASH_KEY = import.meta.env.VITE_UNSPLASH_KEY;
 
-  const [data, setData] = useState(null);
+  async function fetchRandomOutfit(petType) {
+    setLoading(true);
+    setPetImage("");
+    setShirt("");
+    setPants("");
+    setShoes("");
 
-      useEffect(() => {
-        fetch('/api/data') // This will be proxied to http://localhost:5000/api/data
-          .then(res => res.json())
-          .then(data => setData(data.message));
-      }, []);
+    try {
+      // Step 1: Randomly choose pet
+      let petImageUrl = "";
+      if (petType === "dog") {
+        const res = await fetch("https://dog.ceo/api/breeds/image/random");
+        const data = await res.json();
+        petImageUrl = data.message;
+      } else {
+        const res = await fetch("https://api.thecatapi.com/v1/images/search");
+        const data = await res.json();
+        petImageUrl = data[0].url;
+      }
 
+      setPetImage(petImageUrl);
+
+      // Step 3: Fetch random clothing items from Unsplash
+      const fetchFromUnsplash = async (query) => {
+        const res = await fetch(
+          `https://api.unsplash.com/photos/random?query=${query}&orientation=squarish&client_id=${UNSPLASH_KEY}`
+        );
+        const data = await res.json();
+        return data.urls.small;
+      };
+
+      const shirtQuery =
+        petType === "dog"
+          ? "baby shirt without face"
+          : "baby shirt without face";
+      const pantsQuery =
+        petType === "dog"
+          ? "baby pants without face"
+          : "baby pants without face";
+      const shoesQuery =
+        petType === "dog"
+          ? "baby shoes without face"
+          : "baby shoes without face";
+
+      const [shirtImg, pantsImg, shoesImg] = await Promise.all([
+        fetchFromUnsplash(shirtQuery),
+        fetchFromUnsplash(pantsQuery),
+        fetchFromUnsplash(shoesQuery),
+      ]);
+
+      setShirt(shirtImg);
+      setPants(pantsImg);
+      setShoes(shoesImg);
+    } catch (error) {
+      console.error("Error fetching outfit:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="app">
+      <h1>🐾 PawFit 🐾</h1>
+      <div className="buttons">
+        <button onClick={() => fetchRandomOutfit("dog")} disabled={loading}>
+          🐶 {loading ? "Loading..." : "Generate Dog Outfit"}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <button onClick={() => fetchRandomOutfit("cat")} disabled={loading}>
+          🐱 {loading ? "Loading..." : "Generate Cat Outfit"}
+        </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+      {petImage && (
+        <div className="images">
+          <h2>Look at this stylish pet!</h2>
+          <img src={petImage} alt="Pet" className="pet" />
+          <div className="outfit">
+            <img src={shirt} alt="shirt" />
+            <img src={pants} alt="pants" />
+            <img src={shoes} alt="shoes" />
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
